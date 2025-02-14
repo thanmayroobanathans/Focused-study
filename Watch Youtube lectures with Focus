@@ -9,8 +9,8 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #121212;
+            color: white;
         }
         #video-container {
             margin-top: 20px;
@@ -19,20 +19,12 @@
             padding: 10px;
             font-size: 16px;
             margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
         input {
             width: 60%;
         }
         button {
             cursor: pointer;
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-        button:hover {
-            background-color: #0056b3;
         }
         iframe {
             width: 80%;
@@ -48,10 +40,9 @@
             padding: 0;
         }
         .bookmark-list li {
-            background: white;
+            background: #1e1e1e;
             padding: 10px;
             margin: 5px;
-            border: 1px solid #ccc;
             border-radius: 5px;
         }
     </style>
