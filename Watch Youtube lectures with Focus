@@ -3,181 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FocusTube - Study Without Distractions</title>
+    <title>Hare Krishna Study Hub</title>
     <style>
-        /* General Styling */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            margin: 0;
-            padding: 0;
+            background-color: #f4e2ad;
+            color: #4b2c20;
             text-align: center;
+            margin: 0;
+            padding: 20px;
         }
-        
-        /* Container */
         .container {
             max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
+            margin: auto;
             background: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
-        /* Headings */
         h1 {
-            color: #007bff;
+            color: #b36a32;
         }
-
-        /* Input and Buttons */
+        .mantra {
+            font-style: italic;
+            font-size: 18px;
+            color: #006400;
+        }
         input, button {
             width: 80%;
-            padding: 12px;
+            padding: 10px;
             font-size: 16px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #a16c4c;
             border-radius: 5px;
         }
-
-        input {
-            width: 70%;
-        }
-
         button {
-            width: 25%;
-            background-color: #007bff;
+            background-color: #b36a32;
             color: white;
-            border: none;
             cursor: pointer;
-            transition: 0.3s;
         }
-
         button:hover {
-            background-color: #0056b3;
+            background-color: #8a4f28;
         }
-
-        /* Video Section */
         iframe {
             width: 100%;
             height: 400px;
             border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        /* Bookmarks */
-        .bookmarks {
-            margin-top: 20px;
-            text-align: left;
-        }
-
-        .bookmark-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .bookmark-list li {
-            background: #fff;
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .delete-btn:hover {
-            background: darkred;
+            display: none;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>FocusTube - No Distractions</h1>
-        <p>Paste a YouTube lecture URL:</p>
-
-        <input type="text" id="video-url" placeholder="Paste YouTube URL">
+        <h1>Hare Krishna Study Hub</h1>
+        <p class="mantra">"Chant and be happy! Hare Krishna Hare Krishna Krishna Krishna Hare Hare, Hare Rama Hare Rama Rama Rama Hare Hare."</p>
+        <input type="text" id="video-url" placeholder="Paste YouTube Lecture URL">
         <button onclick="loadVideo()">Watch</button>
-        <button onclick="saveBookmark()">Save</button>
-
-        <div id="video-container"></div>
-
-        <!-- Bookmarked Videos -->
-        <div class="bookmarks">
-            <h2>Saved Lectures</h2>
-            <ul id="bookmark-list" class="bookmark-list"></ul>
+        <div id="video-container">
+            <iframe id="youtube-frame" allowfullscreen></iframe>
         </div>
     </div>
-
     <script>
         function extractVideoId(url) {
-            let videoId = null;
             let regex = /(?:youtube\.com\/(?:.*v=|.*\/|.*videos\/|.*embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
             let match = url.match(regex);
-            if (match) {
-                videoId = match[1];
-            }
-            return videoId;
+            return match ? match[1] : null;
         }
-
         function loadVideo() {
             const url = document.getElementById("video-url").value;
             const videoId = extractVideoId(url);
-
+            const iframe = document.getElementById("youtube-frame");
             if (videoId) {
-                document.getElementById("video-container").innerHTML = `
-                    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1" allowfullscreen></iframe>
-                `;
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1`;
+                iframe.style.display = "block";
             } else {
                 alert("Please enter a valid YouTube URL.");
             }
         }
-
-        function saveBookmark() {
-            const url = document.getElementById("video-url").value;
-            if (url) {
-                let bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
-                bookmarks.push(url);
-                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-                displayBookmarks();
-            }
-        }
-
-        function displayBookmarks() {
-            let bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
-            let bookmarkList = document.getElementById("bookmark-list");
-            bookmarkList.innerHTML = "";
-            bookmarks.forEach((url, index) => {
-                bookmarkList.innerHTML += `
-                    <li>
-                        <a href="${url}" target="_blank">${url}</a>
-                        <button class="delete-btn" onclick="deleteBookmark(${index})">X</button>
-                    </li>
-                `;
-            });
-        }
-
-        function deleteBookmark(index) {
-            let bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
-            bookmarks.splice(index, 1);
-            localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-            displayBookmarks();
-        }
-
-        // Load saved bookmarks on page load
-        displayBookmarks();
     </script>
-
 </body>
 </html>
