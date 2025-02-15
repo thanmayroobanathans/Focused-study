@@ -1,377 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Forest Focus with Video Lectures</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <!-- Chart.js for analytics charts -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    /* Basic Reset & Fonts */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #e0f7f1;
-      color: #2c6e49;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header h1 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-    }
-    header p {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: #555;
-    }
-    /* Navigation */
-    nav {
-      margin: 20px 0;
-    }
-    nav button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: none;
-      border-radius: 6px;
-      background: #2c6e49;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    nav button:hover {
-      background: #24503d;
-    }
-    /* Sections */
-    .section {
-      width: 100%;
-      max-width: 700px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-      display: none;
-    }
-    .section.active {
-      display: block;
-    }
-    /* Timer Section */
-    #timerDisplay {
-      font-size: 1.6rem;
-      margin: 15px 0;
-    }
-    input[type="number"] {
-      width: 80%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    button.start-btn, button.stop-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #2c6e49;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-      margin: 10px;
-    }
-    button.start-btn:hover, button.stop-btn:hover {
-      background: #24503d;
-    }
-    /* Tree Visual */
-    #treeContainer {
-      margin: 20px 0;
-      text-align: center;
-      display: none;
-    }
-    #tree {
-      width: 0%;
-      height: 200px;
-      background: url('https://via.placeholder.com/150x200?text=Tree') no-repeat center bottom;
-      background-size: contain;
-      transition: width 0.1s linear;
-      margin: 0 auto;
-    }
-    #treeStatus {
-      margin-top: 10px;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-    /* Analytics & Forest Section */
-    #forestView {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .forest-tree {
-      width: 80px;
-      height: 80px;
-      background: url('https://via.placeholder.com/80?text=🌳') no-repeat center;
-      background-size: cover;
-    }
-    #chartContainer {
-      margin-top: 20px;
-    }
-    /* Video Lecture Section */
-    #videoSection input[type="text"] {
-      width: 90%;
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      margin: 10px 0;
-      font-size: 1rem;
-    }
-    #videoSection button.load-video-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      background: #2c6e49;
-      color: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s;
-      margin-bottom: 10px;
-    }
-    #videoSection button.load-video-btn:hover {
-      background: #24503d;
-    }
-    #videoFrame {
-      width: 100%;
-      height: 360px;
-      border: none;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Forest Focus</h1>
-    <p>Plant your tree by staying focused. If you lose focus, your tree withers!</p>
-  </header>
-  
-  <!-- Navigation Buttons -->
-  <nav>
-    <button onclick="showSection('sessionSection')">Focus Session</button>
-    <button onclick="showSection('analyticsSection')">Analytics & Forest</button>
-    <button onclick="showSection('videoSection')">Video Lecture</button>
-  </nav>
-  
-  <!-- Focus Session Section -->
-  <section id="sessionSection" class="section active">
-    <h2>Focus Session</h2>
-    <label for="duration">Enter Focus Duration (minutes):</label>
-    <input type="number" id="duration" min="1" value="25" />
-    <div id="timerDisplay"></div>
-    <button class="start-btn" onclick="startSession()">Plant Tree</button>
-    <button class="stop-btn" onclick="stopSession()">Stop Session</button>
-    
-    <div id="treeContainer">
-      <div id="tree"></div>
-      <div id="treeStatus"></div>
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
+const Home = () => (
+  <div className="p-6 text-center">
+    <h1 className="text-4xl font-bold">Welcome to Krishna Conscious Study Hub</h1>
+    <p className="mt-4 text-lg">Prepare for your exams with spiritual wisdom and motivation.</p>
+    <motion.div animate={{ scale: 1.1 }} transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}>
+      <blockquote className="mt-6 text-xl italic">"Perform your duty, but do not be attached to the results." - Bhagavad Gita 2.47</blockquote>
+    </motion.div>
+    <Button className="mt-6"><Link to="/lectures">Explore Lectures</Link></Button>
+  </div>
+);
+
+const Lectures = () => (
+  <div className="p-6">
+    <h2 className="text-3xl font-bold">Lecture Library</h2>
+    <div className="grid grid-cols-2 gap-4 mt-6">
+      <Card className="p-4">Physics Lecture 1</Card>
+      <Card className="p-4">Mathematics Lecture 1</Card>
+      <Card className="p-4">Chemistry Lecture 1</Card>
     </div>
-  </section>
-  
-  <!-- Analytics & Forest Section -->
-  <section id="analyticsSection" class="section">
-    <h2>Your Focus Forest & Analytics</h2>
-    <div id="statsDisplay">
-      <!-- Overall stats will be injected here -->
+  </div>
+);
+
+const Motivation = () => (
+  <div className="p-6">
+    <h2 className="text-3xl font-bold">Daily Motivation</h2>
+    <p className="mt-4">"A person who is not disturbed by happiness and distress is eligible for liberation." - Bhagavad Gita 2.15</p>
+  </div>
+);
+
+const App = () => (
+  <Router>
+    <div className="min-h-screen bg-yellow-100">
+      <nav className="p-4 bg-yellow-500 text-white flex justify-between">
+        <Link to="/">Home</Link>
+        <Link to="/lectures">Lectures</Link>
+        <Link to="/motivation">Motivation</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/lectures" element={<Lectures />} />
+        <Route path="/motivation" element={<Motivation />} />
+      </Routes>
     </div>
-    <div id="forestView">
-      <!-- Successful session trees will be displayed here -->
-    </div>
-    <div id="chartContainer">
-      <canvas id="analyticsChart" width="400" height="200"></canvas>
-    </div>
-  </section>
-  
-  <!-- Video Lecture Section -->
-  <section id="videoSection" class="section">
-    <h2>Video Lecture</h2>
-    <p>Enter a YouTube video URL or ID to load a lecture:</p>
-    <input type="text" id="videoInput" placeholder="e.g. https://www.youtube.com/watch?v=VIDEO_ID or VIDEO_ID" />
-    <button class="load-video-btn" onclick="loadVideo()">Load Video</button>
-    <iframe id="videoFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-  </section>
-  
-  <script>
-    // Global variables for session timer
-    let timerInterval, totalSeconds, elapsed = 0, sessionActive = false, sessionStartTime = 0;
-    
-    // Data storage for focus sessions (simulate a database using localStorage)
-    let sessionRecords = JSON.parse(localStorage.getItem("sessionRecords")) || [];
-    
-    // Helper: Save records to localStorage
-    function saveRecords() {
-      localStorage.setItem("sessionRecords", JSON.stringify(sessionRecords));
-    }
-    
-    // Section Navigation
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      if(id === "analyticsSection") updateAnalytics();
-    }
-    
-    // Timer & Session Functions
-    function updateTimerDisplay() {
-      let remaining = totalSeconds - elapsed;
-      let minutes = Math.floor(remaining / 60);
-      let seconds = remaining % 60;
-      document.getElementById("timerDisplay").textContent = `Time Left: ${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-      let growthPercentage = (elapsed / totalSeconds) * 100;
-      document.getElementById("tree").style.width = growthPercentage + "%";
-    }
-    
-    function startSession() {
-      if(sessionActive) return;
-      document.getElementById("tree").style.width = "0%";
-      document.getElementById("tree").style.filter = "";
-      document.getElementById("treeStatus").textContent = "";
-      document.getElementById("treeContainer").style.display = "block";
-      
-      let minutes = parseInt(document.getElementById("duration").value);
-      if(isNaN(minutes) || minutes <= 0) {
-        alert("Please enter a valid focus duration.");
-        return;
-      }
-      totalSeconds = minutes * 60;
-      elapsed = 0;
-      sessionActive = true;
-      sessionStartTime = Date.now();
-      updateTimerDisplay();
-      
-      timerInterval = setInterval(() => {
-        elapsed++;
-        updateTimerDisplay();
-        if(elapsed >= totalSeconds) {
-          endSession(true);
-        }
-      }, 1000);
-    }
-    
-    function stopSession() {
-      if(!sessionActive) return;
-      clearInterval(timerInterval);
-      let actualElapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
-      endSession(false, actualElapsed);
-    }
-    
-    function endSession(success, actualElapsed) {
-      clearInterval(timerInterval);
-      sessionActive = false;
-      let usedTime = success ? totalSeconds : (actualElapsed || totalSeconds);
-      if(success) {
-        document.getElementById("treeStatus").textContent = "Great job! Your tree has grown.";
-      } else {
-        document.getElementById("treeStatus").textContent = "Session ended early. Your tree withered.";
-        document.getElementById("tree").style.filter = "grayscale(100%)";
-      }
-      let record = {
-        timestamp: new Date().toISOString(),
-        duration: usedTime,
-        success: success
-      };
-      sessionRecords.push(record);
-      saveRecords();
-    }
-    
-    // Page Visibility API: End session as failure if user switches tabs
-    document.addEventListener("visibilitychange", function() {
-      if(document.hidden && sessionActive) {
-        endSession(false);
-      }
-    });
-    
-    // Analytics Functions
-    function updateAnalytics() {
-      const totalSessions = sessionRecords.length;
-      const successfulSessions = sessionRecords.filter(r => r.success).length;
-      const totalFocusTime = sessionRecords.reduce((sum, r) => sum + r.duration, 0);
-      const successRate = totalSessions ? ((successfulSessions / totalSessions) * 100).toFixed(2) : 0;
-      
-      document.getElementById("statsDisplay").innerHTML = `
-        <p>Total Sessions: ${totalSessions}</p>
-        <p>Successful Sessions: ${successfulSessions}</p>
-        <p>Total Focus Time: ${totalFocusTime} sec</p>
-        <p>Success Rate: ${successRate}%</p>
-      `;
-      
-      const forestView = document.getElementById("forestView");
-      forestView.innerHTML = "";
-      sessionRecords.filter(r => r.success).forEach(() => {
-        const treeDiv = document.createElement("div");
-        treeDiv.className = "forest-tree";
-        forestView.appendChild(treeDiv);
-      });
-      
-      let sessionsByDate = {};
-      sessionRecords.forEach(r => {
-        let date = new Date(r.timestamp).toLocaleDateString();
-        sessionsByDate[date] = (sessionsByDate[date] || 0) + 1;
-      });
-      let labels = Object.keys(sessionsByDate);
-      let data = Object.values(sessionsByDate);
-      
-      const ctx = document.getElementById('analyticsChart').getContext('2d');
-      if(window.myChart instanceof Chart) { window.myChart.destroy(); }
-      window.myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: "Sessions per Day",
-            data: data,
-            backgroundColor: "rgba(46, 106, 79, 0.7)"
-          }]
-        },
-        options: {
-          scales: { y: { beginAtZero: true } },
-          plugins: {
-            title: { display: true, text: "Daily Focus Sessions" }
-          }
-        }
-      });
-    }
-    
-    // Video Lecture Feature: Load YouTube video in iframe
-    function loadVideo() {
-      let input = document.getElementById("videoInput").value.trim();
-      if(!input) {
-        alert("Please enter a YouTube URL or Video ID.");
-        return;
-      }
-      let videoId = "";
-      // If input contains "youtube", extract the video id from URL
-      if(input.includes("youtube.com") || input.includes("youtu.be")) {
-        // Use regex to extract the video id
-        let regex = /(?:v=|\/)([0-9A-Za-z_-]{11})/;
-        let match = input.match(regex);
-        if(match && match[1]) {
-          videoId = match[1];
-        }
-      } else if(input.length === 11) { 
-        videoId = input;
-      } else {
-        alert("Invalid input. Please enter a valid YouTube URL or Video ID.");
-        return;
-      }
-      let embedUrl = `https://www.youtube.com/embed/${videoId}`;
-      document.getElementById("videoFrame").src = embedUrl;
-    }
-  </script>
-</body>
-</html>
+  </Router>
+);
+
+export default App;
